@@ -7,7 +7,7 @@ import { useQuery } from "react-query";
 
 const FacilityList = () => {
   const api = "https://sffacilitiesapi.azurewebsites.net/api/facilities"
-  const {  data, isLoading, isError } = useQuery("facilities", () =>
+  const {  data, isLoading } = useQuery("facilities", () =>
   axios.get(api).then(
       (resp) => resp.data)    
   );
