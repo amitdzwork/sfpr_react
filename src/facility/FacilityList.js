@@ -2,9 +2,12 @@ import MaterialTable from "material-table";
 import axios from "axios";
 import { useQuery } from "react-query";
 
+
+
+
 const FacilityList = () => {
   const api = "https://sffacilitiesapi.azurewebsites.net/api/facilities"
-  const {  data } = useQuery("facilities", () =>
+  const {  data, isLoading, isError } = useQuery("facilities", () =>
   axios.get(api).then(
       (resp) => resp.data)    
   );
@@ -22,12 +25,18 @@ const FacilityList = () => {
         { field: 'longitude',title: 'Longitude', filtering: false } 
       ]
     
+      if (isLoading) {
+        return <h4 style={{ color: 'red' }}>Loading data...</h4>
+      }
     return (
         <div className="tabwrap">      
           <MaterialTable 
             title=""            
             columns={columns}      
             data={data}       
+            components={{
+              OverlayLoading: props => (<div>Loading..</div>)
+            }}
             state={{ isLoading: true }}
             localization={{
               pagination: {
@@ -46,6 +55,8 @@ const FacilityList = () => {
               toolbar:true,
               actionsColumnIndex:-1,
               addRowPosition:"first",
+              loadingType:"linear",
+              isLoading:true,
               style:{
                 backgroundColor:'#E9F4F9',
                 border:'solid 1px black'                
@@ -66,7 +77,7 @@ const FacilityList = () => {
               },
               filtering:true                                                  
             }}                  
-    />      
+    ></MaterialTable>
         </div>
     )
 }
